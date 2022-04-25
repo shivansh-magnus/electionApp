@@ -1,7 +1,10 @@
+import 'package:election/services/functions.dart';
 import 'package:election/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
+
+import 'electionInfo.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -47,7 +50,19 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               height: 45,
               child: ElevatedButton(
-                  onPressed: () {}, child: Text("Start Election")))
+                  onPressed: () async {
+                    if (controller.text.length > 0) {
+                      await startElection(controller.text, ethClient!);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ElectionInfo(
+                                    ethclient: ethClient!,
+                                    electionName: controller.text,
+                                  )));
+                    }
+                  },
+                  child: Text("Start Election")))
         ],
       )),
     );
